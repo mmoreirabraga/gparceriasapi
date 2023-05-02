@@ -14,7 +14,7 @@ Este comando instala as dependências/bibliotecas, descritas no arquivo `require
 Para executar a API  basta executar:
 
 ```
-(env)$ uvicorn main:app --reload
+(env)$ uvicorn app:app --reload
 ```
 
 Abra o [http://localhost:8000/docs](http://localhost:8000/docs) ou [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) no navegador para verificar a api swagger
