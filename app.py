@@ -37,11 +37,11 @@ app.add_middleware(
 )
 
 
-empresa_tag = 'Empresa(privado ou prefeitura): Inserção, visualização e remoção de empresas na base'
-area_intencao_tag = 'Area Intenção: Inserção, visualização e remoção de areas de intenções na base'
+empresa_tag = 'Empresa(privado ou prefeitura): Inserção, atualização, visualização e remoção de empresas na base'
+area_intencao_tag = 'Area Intenção: visualização das areas de intenções na base'
 empresa_area_tag = 'Empresa área: inserir e remover uma empresa que possui area intenção na base'
 listar_area_empresa_tag = 'Listar areas da empresa: listar todas as areas vinculada a empresa'
-
+match_tag = "Listar match: Listar todos os matches que ocorreram entre os privados e prefeituras"
 
 @app.put('/empresa', tags=[empresa_tag])
 @app.post('/empresa', tags=[empresa_tag])
@@ -161,7 +161,7 @@ def listar_areas_intencoes():
 @app.get('/listarAreasEmpresa', tags=[listar_area_empresa_tag])
 def listar_areas_empresa(id:int): # query:EmpresaBuscaSchema
     '''
-        Listar todas as áreas da empresa, ou seja, listar as áreas que estão vinculada as empresas
+        Listar todas as áreas da empresa, ou seja, listar as áreas que estão vinculada as empresas, deve passar o id da empresa
     '''
     try:
         
@@ -219,13 +219,13 @@ def excluir_empresa_area(id_empresa:int, id_area_intencao:int): # query: Empresa
     try:
         repo = EmpresaAreaRepository()
         repo.delete(id_empresa=id_empresa, id_area_intencao=id_area_intencao)
-        msg_sucesso = 'Empresa Excluida com sucesso'
+        msg_sucesso = 'A área de intenção foi desvinculada da empresa ou prefeitura com sucesso'
         return {"mensagem": msg_sucesso}, 200
     except Exception:
         error_msg = 'Não foi possivel deletar a empresa'
         return {"mensagem": error_msg}, 400
 
-@app.get("/matches")
+@app.get("/matches", tags=[match_tag])
 def matches():
     """
         Matches entre privado e prefeitura que possuem a mesma área de intenção.
@@ -251,7 +251,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 app.exception_handler(RequestValidationError)(validation_exception_handler)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
 
